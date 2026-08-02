@@ -1,0 +1,40 @@
+[package]
+name = "vibea3"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+license = "MIT OR Apache-2.0"
+description = "Typed e-Amusement RPC transport, dynamic runtime, and kbinxml codec"
+
+[dependencies]
+arc-swap = "1.7"
+axum = { version = "0.8.9", features = ["http1", "tokio"] }
+bytes = "1.12.1"
+bson = "2.15.0"
+encoding_rs = "0.8.35"
+form_urlencoded = "1.2"
+futures-util = "0.3"
+libloading = "0.8"
+linkme = "0.3.33"
+vibea3-macros = { path = "../../vibea3-macros", version = "0.1.0" }
+md-5 = "0.11.0"
+notify = "8"
+quick-xml = { version = "0.41.0", features = ["encoding"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+thiserror = "2.0.19"
+tokio = { version = "1.53.1", features = ["macros", "net", "rt-multi-thread", "sync", "time"] }
+tracing = "0.1"
+
+[dev-dependencies]
+criterion = "0.7.0"
+proptest = "1.11.0"
+tempfile = "3"
+tokio = { version = "1.53.1", features = ["macros", "net", "rt-multi-thread", "sync"] }
+tower = { version = "0.5", features = ["util"] }
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+
+[[bench]]
+name = "codec"
+harness = false

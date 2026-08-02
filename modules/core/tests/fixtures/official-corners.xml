@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root alpha="12" method="probe">
+  <empty __type="str"></empty>
+  <spaces __type="str">  leading  middle  trailing  </spaces>
+  <entities __type="str">&lt;&gt;&amp;&quot;&apos;</entities>
+  <unicode __type="str">日本語 ｱｲｳ café</unicode>
+  <s8_min __type="s8">-128</s8_min>
+  <s8_max __type="s8">127</s8_max>
+  <u8_max __type="u8">255</u8_max>
+  <s16_min __type="s16">-32768</s16_min>
+  <s16_max __type="s16">32767</s16_max>
+  <u16_max __type="u16">65535</u16_max>
+  <s32_min __type="s32">-2147483648</s32_min>
+  <s32_max __type="s32">2147483647</s32_max>
+  <u32_max __type="u32">4294967295</u32_max>
+  <s64_min __type="s64">-9223372036854775808</s64_min>
+  <s64_max __type="s64">9223372036854775807</s64_max>
+  <u64_max __type="u64">18446744073709551615</u64_max>
+  <float __type="float">-123.5</float>
+  <double __type="double">1.23456789012345</double>
+  <bool_false __type="bool">0</bool_false>
+  <bool_true __type="bool">1</bool_true>
+  <ip __type="ip4">127.0.0.1</ip>
+  <time __type="time">1700000000</time>
+  <binary __type="bin">0001027f80feff</binary>
+  <numbers __type="s32" __count="4">-1 0 1 2147483647</numbers>
+</root>

@@ -1,0 +1,10 @@
+[workspace]
+members = [
+    "bootstrap",
+    "vibea3-macros",
+    "modules/core",
+    "modules/core_module",
+    "modules/popn_highcheers",
+    "modules/test_module",
+]
+resolver = "2"

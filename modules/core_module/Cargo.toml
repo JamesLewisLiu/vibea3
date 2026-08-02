@@ -1,0 +1,18 @@
+[package]
+name = "core"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[package.metadata.vibea3]
+module = true
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+vibea3 = { path = "../core" }
+futures-timer = "3"
+des = "0.8"
+bson = "2.15.0"
+serde = { version = "1", features = ["derive"] }

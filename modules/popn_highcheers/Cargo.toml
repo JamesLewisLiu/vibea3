@@ -1,0 +1,18 @@
+[package]
+name = "popn_highcheers"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[package.metadata.vibea3]
+module = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+vibea3 = { path = "../core" }
+bson = "2.15.0"
+encoding_rs = "0.8"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"

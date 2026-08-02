@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root s="-16" u="0xFF" b="01" text="hello">
+  <first __type="u8">1</first>
+  <second __type="u8">2</second>
+</root>

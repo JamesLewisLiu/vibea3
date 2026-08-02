@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="SHIFT_JIS"?>
+<call model="M39:J:D:A:2026041500" srcid="0120100000002779278F" tag="Y7gvAI/+">
+    <pcb method="boot">
+        <loc_id __type="str">JP-1</loc_id>
+        <loc_type __type="u8">0</loc_type>
+        <loc_name __type="str">Vibea3 Arcade</loc_name>
+        <country __type="str">JP</country>
+        <region __type="str">JP-13</region>
+        <pref __type="s16">13</pref>
+        <customer __type="str">X000000000</customer>
+        <company __type="str">X000000000</company>
+        <gip __type="ip4">127.0.0.1</gip>
+        <gp __type="u16">5700</gp>
+        <rom_number __type="str">-</rom_number>
+        <c_drive __type="u64">390812925952</c_drive>
+        <d_drive __type="u64">256703631360</d_drive>
+        <e_drive __type="u64">9223372036854775807</e_drive>
+        <f_drive __type="u64">9223372036854775807</f_drive>
+        <os_act __type="str">-</os_act>
+        <etc __type="str"/>
+    </pcb>
+</call>
