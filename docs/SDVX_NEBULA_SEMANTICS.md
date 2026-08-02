@@ -12,37 +12,14 @@ defaults are initialized by `sub_18053C220`.
 
 ## `extend/info`
 
-Every `extend/info` record has the same physical layout:
+`extend_type` selects the outer table, but it is usually `param_num_1` or
+another numeric operand that selects behavior inside that table. `extend_id`
+is not a universal subtype: it may be an item/music identity, an ordering key,
+a sentinel, a fallback value, or ignored.
 
-| Field | Meaning |
-|---|---|
-| `extend_type:u32` | Selects one of 24 client-side consumer tables (`0..23`). |
-| `extend_id:u32` | Record identity. Some consumers select it directly; others use it only as a stable sort key. |
-| `param_num_1..5:s32` | Five type-specific numeric operands. |
-| `param_str_1..5:str` | Five type-specific strings, each copied into a fixed 1024-byte client buffer. |
-
-The client stores at most 256 records per type. Only the following types have
-live consumers in this build:
-
-| Type | Consumer / effect |
-|---:|---|
-| 0 | Generic condition/configuration records. No independent presentation feature consumes them directly. |
-| 1 | Generic presentation/resource overrides. `param_num_1` is the category key; records in a category are sorted and selected by index. Consumers include demo information, card-entry presentation, top frame, and game-over assets. |
-| 2 | Appeal-card generator station definitions. `param_num_1 == 1` marks an enabled station; `param_str_1` is its label and `param_str_2..5` are the station payloads for generator slots 1-4/special. |
-| 3 | Stamp-sheet event definitions. `extend_id` selects the sheet; the strings drive sheet art, text, term text, and reward/stamp presentation. |
-| 4 | Card-entry/profile-load text tables. The client parses comma-separated rows from the selected numeric/string pairs and builds localized display entries. |
-| 6 | Runtime command strings. Each non-empty string may contain `kac:`, `coursemask:`, `rankstr:`, `ranklimit:`, `matchingver:`, or `rot2effect:`. |
-| 12 | Runtime bonus/Blaster command strings: `createrbonus:`, `staffbonus:`, `kacbonus:`, `blasterenergy:`, and `blasterstr:`. The spelling `createrbonus` is the client's spelling. |
-| 14 | Total-result extended-event panel. `extend_id` identifies the panel, `param_num_2` enables it, `param_num_3` selects one of three display modes, `param_num_4` is converted to seconds, `param_num_5` supplies an additional gate, and strings 1-3 carry condition/text variants. |
-| 15 | Aka-name composition data. Positive numeric operands reference aka-name parts; the corresponding string operands describe how the selected parts are joined. |
-| 16 | Generator/factory inventory and display configuration. Its XML-in-string payload recognizes `display_adj`, `include_reserve`, `inventory_str`, and `overorder_str`. |
-| 18 | Music-select condition/list definitions. Strings contain comma-separated music/chart selectors; accepted chart names are `NOVICE`, `ADVANCED`, `EXHAUST`, `INFINITE`, `GRAVITY`, `HEAVENLY`, `MAXIMUM`, `VIVID`, `EXCEED`, and `ULTIMATE`. |
-| 19 | Total-result scripted text/result fragments, concatenated from the five string operands when the associated player/event state is active. |
-| 23 | Total-result event-bonus rules (`TR.StateFuncEventBonus`). Numeric operands select rule behavior/keying; strings provide the condition and result payloads. |
-
-Types 5, 7-11, 13, 17, 20-22 have no live consumer in this binary. The
-server keeps the wire representation generic rather than inventing a global
-meaning for the ten operands.
+The complete field-level reference, including all 24 outer types, command
+grammars, subtype gates, ignored fields, and the client-wide 256-record input
+limit, is in [SDVX_NEBULA_EXTEND.md](SDVX_NEBULA_EXTEND.md).
 
 ## `sv7_load_m` music parameter array
 
