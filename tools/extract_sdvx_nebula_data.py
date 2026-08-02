@@ -45,6 +45,10 @@ def integer(parent: ET.Element, name: str, default: int = 0) -> int:
     return default if value == "" else int(value, 0)
 
 
+def u32(parent: ET.Element, name: str, default: int = 0) -> int:
+    return integer(parent, name, default) & 0xFFFF_FFFF
+
+
 def chart(node: ET.Element | None) -> dict[str, object] | None:
     if node is None:
         return None
@@ -54,11 +58,11 @@ def chart(node: ET.Element | None) -> dict[str, object] | None:
         "illustrator": text(node, "illustrator"),
         "effected_by": text(node, "effected_by"),
         "level": integer(node, "difnum") // 10,
-        "price": integer(node, "price"),
+        "price": u32(node, "price"),
         "limited": integer(node, "limited"),
-        "jacket_print": integer(node, "jacket_print"),
-        "jacket_mask": integer(node, "jacket_mask"),
-        "max_exscore": integer(node, "max_exscore"),
+        "jacket_print": u32(node, "jacket_print"),
+        "jacket_mask": u32(node, "jacket_mask"),
+        "max_exscore": u32(node, "max_exscore"),
         "radar": {
             "notes": integer(radar, "notes"),
             "peak": integer(radar, "peak"),
@@ -92,7 +96,7 @@ def music_records(path: Path) -> list[dict[str, object]]:
             "inf_ver": integer(info, "inf_ver"),
             "bg_no": integer(info, "bg_no"),
             "genre": integer(info, "genre"),
-            "demo_pri": integer(info, "demo_pri"),
+            "demo_pri": u32(info, "demo_pri"),
         }
         for name in DIFFICULTIES:
             record[name] = chart(difficulty.find(name))

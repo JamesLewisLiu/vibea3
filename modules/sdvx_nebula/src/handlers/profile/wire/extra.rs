@@ -15,12 +15,6 @@ pub(super) struct FactoryStateInfo {
 #[derive(Kbin)]
 #[kbin(node = "campaign")]
 pub(super) struct CampaignState {
-    #[kbin(repeated)]
-    info: Vec<CampaignStateInfo>,
-}
-#[derive(Kbin)]
-#[kbin(node = "info")]
-pub(super) struct CampaignStateInfo {
     campaign_id: i32,
     jackpot_flg: bool,
 }

@@ -7,6 +7,10 @@ use crate::{
         MatchingResult, MusicScore, PlayerItem, PlayerParam, PlayerSetting, RadarElements,
         StoryProgress,
     },
+    protocol::{
+        CLEAR_TYPE_CLEAR, CLEAR_TYPE_PERFECT_ULTIMATE_CHAIN, CLEAR_TYPE_ULTIMATE_CHAIN,
+        PARAMETER_VALUE_COUNT,
+    },
 };
 
 use super::{database_error, invalid_session};
@@ -176,9 +180,6 @@ struct ItemWrite {
     id: Option<u32>,
     param: Option<u32>,
     diff_param: Option<i32>,
-    print: Option<i32>,
-    count: Option<i32>,
-    start_option: Option<i32>,
 }
 #[derive(Kbin)]
 #[kbin(node = "param")]
@@ -191,6 +192,7 @@ struct ParamWrites {
 struct ParamWrite {
     #[kbin(rename = "type")]
     param_type: i32,
+    id: i32,
     #[kbin(array)]
     param: Vec<i32>,
 }
@@ -236,8 +238,8 @@ struct CourseTrack {
     st: Option<i16>,
     sc: Option<u32>,
     ex: Option<u32>,
-    ct: Option<i16>,
-    gr: Option<i16>,
+    ct: Option<u32>,
+    gr: Option<u32>,
     jr: Option<u32>,
     cr: Option<u32>,
     nr: Option<u32>,
@@ -295,7 +297,7 @@ struct MatchingWrite {
 #[kbin(node = "print")]
 struct PrintWrite {
     count: Option<i32>,
-    start_option: Option<i32>,
+    start_option: Option<i8>,
 }
 
 impl TrackWrite {
@@ -339,6 +341,13 @@ impl TrackWrite {
                 })
                 .collect(),
             play_count: 1,
+            clear_count: u32::from(self.clear_type.unwrap_or_default() >= CLEAR_TYPE_CLEAR),
+            ultimate_chain_count: u32::from(
+                self.clear_type.unwrap_or_default() >= CLEAR_TYPE_ULTIMATE_CHAIN,
+            ),
+            perfect_ultimate_chain_count: u32::from(
+                self.clear_type.unwrap_or_default() >= CLEAR_TYPE_PERFECT_ULTIMATE_CHAIN,
+            ),
             updated_at: DateTime::now(),
         }
     }

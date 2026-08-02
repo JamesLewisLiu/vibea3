@@ -9,7 +9,7 @@ async fn common(ctx: RpcContext<State>, _request: EmptyRequest) -> RpcResult<Com
 #[cfg(test)]
 mod tests {
     use super::*;
-    use vibea3::{DecodeOptions, EncodeOptions, NameMode, decode_kbin, encode_kbin};
+    use vibea3::{DecodeOptions, EncodeOptions, NameMode, decode_kbin, encode_kbin, encode_xml};
 
     const FIRST_MUSIC_ID: u32 = 1;
     const ULTIMATE_MUSIC_ID: u32 = 636;
@@ -90,6 +90,23 @@ mod tests {
             decoded.akaname.unwrap().info.len(),
             data.akaname_parts.len()
         );
+    }
+
+    #[test]
+    fn campaign_stock_matches_the_common_response_consumer() {
+        let data = load_from_manifest().unwrap();
+        let mut response = CommonResponse::new(&data);
+        response.campaign = Some(Campaign {
+            stock: Some(CampaignStock {
+                campaign_id: 12,
+                stock_num: 34,
+            }),
+        });
+        let xml = encode_xml(&response, EncodeOptions::default()).unwrap();
+        let xml = String::from_utf8(xml).unwrap();
+        assert!(xml.contains("<campaign><stock>"));
+        assert!(xml.contains("<campaign_id __type=\"s32\">12</campaign_id>"));
+        assert!(xml.contains("<stock_num __type=\"s32\">34</stock_num>"));
     }
 
     fn load_from_manifest() -> Result<CommonData, String> {

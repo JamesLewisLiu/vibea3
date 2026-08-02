@@ -68,12 +68,15 @@ async fn save(ctx: RpcContext<State>, request: SaveRequest) -> RpcResult<EmptyRe
     }
     if let Some(params) = request.param {
         for param in params.info {
+            let mut values = param.param;
+            values.truncate(PARAMETER_VALUE_COUNT);
             profile
                 .params
-                .retain(|old| old.param_type != param.param_type);
+                .retain(|old| old.param_type != param.param_type || old.id != param.id);
             profile.params.push(PlayerParam {
                 param_type: param.param_type,
-                values: param.param,
+                id: param.id,
+                values,
             });
         }
     }

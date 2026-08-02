@@ -162,15 +162,34 @@ impl Database {
         if let Some(old) = current {
             score.score = score.score.max(old.score);
             score.exscore = score.exscore.max(old.exscore);
+            score.clear_type = score.clear_type.max(old.clear_type);
+            score.score_grade = score.score_grade.max(old.score_grade);
             score.max_chain = score.max_chain.max(old.max_chain);
             score.best_critical = score.best_critical.max(old.best_critical);
-            score.best_near = score.best_near.max(old.best_near);
+            score.best_near = if old.play_count == 0 {
+                score.best_near
+            } else {
+                score.best_near.min(old.best_near)
+            };
             score.best_error = if old.play_count == 0 {
                 score.best_error
             } else {
                 score.best_error.min(old.best_error)
             };
+            score.volforce = score.volforce.max(old.volforce);
+            score.just = score.just.max(old.just);
+            score.effective_rate = score.effective_rate.max(old.effective_rate);
+            score.btn_rate = score.btn_rate.max(old.btn_rate);
+            score.long_rate = score.long_rate.max(old.long_rate);
+            score.vol_rate = score.vol_rate.max(old.vol_rate);
             score.play_count = old.play_count.saturating_add(1);
+            score.clear_count = old.clear_count.saturating_add(incoming.clear_count);
+            score.ultimate_chain_count = old
+                .ultimate_chain_count
+                .saturating_add(incoming.ultimate_chain_count);
+            score.perfect_ultimate_chain_count = old
+                .perfect_ultimate_chain_count
+                .saturating_add(incoming.perfect_ultimate_chain_count);
         }
         self.raw
             .update_one(

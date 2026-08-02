@@ -62,6 +62,13 @@ These are cases where status `0` alone is insufficient:
 - `sv7_entry_s` loops over repeated `entry` nodes containing `port:u16`, `gip:ip4`, and `lip:ip4`.
 - `sv7_frozen`, `sv7_buy`, `sv7_save_fi`, and `sv7_save_pb` use one-byte result values, not s32.
 - `sv7_load_m` ignores a music `param` array unless it contains at least 26 u32 elements.
+- `param/info` requires both `type:s32` and `id:s32`; omitting `id` causes the client to discard the complete record.
+- Profile `campaign` and `weekly_music` data are repeated root siblings, not `info` wrappers. Common campaign stock is the separate `campaign/stock/{campaign_id,stock_num}` shape.
+- Settings intentionally use `music_id`/`music_type` in `sv7_save` and `last_music_id`/`last_music_type` in `sv7_load`.
+
+The recovered operand meanings for `extend`, the 26-member music array, the
+profile parameter records, and all 121 recognized event commands are in
+`docs/SDVX_NEBULA_SEMANTICS.md`.
 
 ## Psmap schemas
 

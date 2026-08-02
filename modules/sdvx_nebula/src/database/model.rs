@@ -160,6 +160,8 @@ pub(crate) struct PlayerItem {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub(crate) struct PlayerParam {
     pub param_type: i32,
+    #[serde(default)]
+    pub id: i32,
     pub values: Vec<i32>,
 }
 
@@ -206,6 +208,12 @@ pub(crate) struct MusicScore {
     pub mix_like: bool,
     pub matching: Vec<MatchingResult>,
     pub play_count: u32,
+    #[serde(default)]
+    pub clear_count: u32,
+    #[serde(default)]
+    pub ultimate_chain_count: u32,
+    #[serde(default)]
+    pub perfect_ultimate_chain_count: u32,
     pub updated_at: DateTime,
 }
 

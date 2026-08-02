@@ -39,14 +39,16 @@ struct LoadResponse {
     story: Option<StoryContainer>,
     music: Option<MusicContainer>,
     volte_factory: Option<FactoryState>,
-    campaign: Option<CampaignState>,
+    #[kbin(repeated)]
+    campaign: Vec<CampaignState>,
     cloud: Option<CloudState>,
     something: Option<RankingState>,
     festival: Option<FestivalState>,
     valgene_ticket: Option<ValgeneTicket>,
     arena: Option<ArenaState>,
     additional_info: Option<AdditionalInfo>,
-    weekly_music: Option<WeeklyMusicState>,
+    #[kbin(repeated)]
+    weekly_music: Vec<WeeklyMusicState>,
     floorinfection: Option<EnergyEvent>,
     pb: Option<EnergyEvent>,
 }
@@ -90,14 +92,14 @@ impl LoadResponse {
             story: None,
             music: None,
             volte_factory: None,
-            campaign: None,
+            campaign: Vec::new(),
             cloud: None,
             something: None,
             festival: None,
             valgene_ticket: None,
             arena: None,
             additional_info: None,
-            weekly_music: None,
+            weekly_music: Vec::new(),
             floorinfection: None,
             pb: None,
         }
@@ -155,14 +157,14 @@ impl LoadResponse {
                 info: scores.into_iter().map(ScoreResponse::from).collect(),
             }),
             volte_factory: None,
-            campaign: None,
+            campaign: Vec::new(),
             cloud: None,
             something: None,
             festival: None,
             valgene_ticket: None,
             arena: None,
             additional_info: None,
-            weekly_music: None,
+            weekly_music: Vec::new(),
             floorinfection: None,
             pb: None,
         }
@@ -239,7 +241,9 @@ struct SettingResponse {
     draw_adjust: i32,
     eff_c_left: u8,
     eff_c_right: u8,
+    #[kbin(rename = "last_music_id")]
     music_id: i32,
+    #[kbin(rename = "last_music_type")]
     music_type: u8,
     sort_type: u8,
     narrow_down: u8,
@@ -313,6 +317,7 @@ struct ParamContainer {
 struct ParamResponse {
     #[kbin(rename = "type")]
     param_type: i32,
+    id: i32,
     #[kbin(array)]
     param: Vec<i32>,
 }
@@ -321,6 +326,7 @@ impl From<PlayerParam> for ParamResponse {
         v.values.resize(PARAMETER_VALUE_COUNT, 0);
         Self {
             param_type: v.param_type,
+            id: v.id,
             param: v.values,
         }
     }
@@ -368,32 +374,21 @@ struct ScoreResponse {
 impl From<MusicScore> for ScoreResponse {
     fn from(v: MusicScore) -> Self {
         let mut param = vec![0; MUSIC_RECORD_PARAM_COUNT];
-        param[0] = v.music_id;
-        param[1] = v.music_type;
-        param[2] = v.score;
-        param[3] = v.exscore;
-        param[4] = v.clear_type;
-        param[5] = v.score_grade;
-        param[6] = v.max_chain;
-        param[7] = v.best_critical;
-        param[8] = v.best_near;
-        param[9] = v.best_error;
-        param[10] = v.effective_rate;
-        param[11] = v.btn_rate;
-        param[12] = v.long_rate;
-        param[13] = v.vol_rate;
-        param[14] = v.volforce;
-        param[15] = u32::from(v.mode);
-        param[16] = u32::from(v.start_option);
-        param[17] = u32::from(v.gauge_type);
-        param[18] = u32::from(v.notes_option);
-        param[19] = u32::from(v.online_num);
-        param[20] = u32::from(v.local_num);
-        param[21] = u32::from(v.challenge_type);
-        param[22] = v.play_count;
-        param[23] = v.retry_cnt.max(0) as u32;
-        param[24] = v.mix_id.max(0) as u32;
-        param[25] = v.just;
+        param[MUSIC_PARAM_MUSIC_ID] = v.music_id;
+        param[MUSIC_PARAM_MUSIC_TYPE] = v.music_type;
+        param[MUSIC_PARAM_PRIMARY_SCORE] = v.score;
+        param[MUSIC_PARAM_PRIMARY_EXSCORE] = v.exscore;
+        param[MUSIC_PARAM_PRIMARY_CLEAR_TYPE] = v.clear_type;
+        param[MUSIC_PARAM_PRIMARY_GRADE] = v.score_grade;
+        param[MUSIC_PARAM_PRIMARY_MAX_CHAIN] = v.max_chain;
+        param[MUSIC_PARAM_PRIMARY_PLAY_COUNT] = v.play_count;
+        param[MUSIC_PARAM_PRIMARY_CLEAR_COUNT] = v.clear_count;
+        param[MUSIC_PARAM_PRIMARY_UC_COUNT] = v.ultimate_chain_count;
+        param[MUSIC_PARAM_PRIMARY_PUC_COUNT] = v.perfect_ultimate_chain_count;
+        param[MUSIC_PARAM_VOLFORCE] = v.volforce;
+        param[MUSIC_PARAM_BUTTON_RATE] = v.btn_rate;
+        param[MUSIC_PARAM_LONG_RATE] = v.long_rate;
+        param[MUSIC_PARAM_VOL_RATE] = v.vol_rate;
         Self { param }
     }
 }
@@ -443,3 +438,6 @@ struct Automation {
 }
 
 mod methods;
+
+#[cfg(test)]
+mod tests;

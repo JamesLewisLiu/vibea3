@@ -43,9 +43,9 @@ impl CommonResponse {
             skill_course: (!data.skill_courses.is_empty()).then(|| SkillCourse {
                 info: data.skill_courses.clone(),
             }),
-            // These catalogs ship in the update's local XML databases. Sending
-            // all of them exceeds kbin's bounded tree representation; common
-            // carries only server-side deltas and unlock state.
+            // These catalogs ship in the update's local XML databases. Common
+            // carries only server-side deltas and unlock state; the codec can
+            // still represent the complete catalog when a caller needs it.
             music: None,
             appealcard: None,
             akaname: None,
@@ -84,8 +84,20 @@ repeated_container!(AppealCards, "appealcard", AppealCardInfo);
 repeated_container!(Akaname, "akaname", AkanamePart);
 repeated_container!(Extend, "extend", ExtendInfo);
 repeated_container!(AutomationCatalog, "automation", AutomationInfo);
-repeated_container!(Campaign, "campaign", CampaignInfo);
 repeated_container!(RankingEvent, "something", RankingEventInfo);
+
+#[derive(Kbin)]
+#[kbin(node = "campaign")]
+struct Campaign {
+    stock: Option<CampaignStock>,
+}
+
+#[derive(Kbin)]
+#[kbin(node = "stock")]
+struct CampaignStock {
+    campaign_id: i32,
+    stock_num: i32,
+}
 
 #[derive(Kbin)]
 #[kbin(node = "festival")]
@@ -292,11 +304,6 @@ struct FactoryStockInfo {
 }
 #[derive(Kbin)]
 #[kbin(node = "info")]
-struct CampaignInfo {
-    campaign_id: i32,
-}
-#[derive(Kbin)]
-#[kbin(node = "info")]
 struct RankingEventInfo {
     ranking_id: i32,
     ranking_type: i32,
@@ -376,7 +383,7 @@ pub(crate) struct MusicInfo {
     pub inf_ver: u32,
     pub bg_no: u32,
     pub genre: u32,
-    pub demo_pri: i32,
+    pub demo_pri: u32,
     #[kbin(rename = "NOVICE")]
     pub novice: Option<ChartInfo>,
     #[kbin(rename = "ADVANCED")]
@@ -397,11 +404,11 @@ pub(crate) struct ChartInfo {
     pub illustrator: String,
     pub effected_by: String,
     pub level: u32,
-    pub price: i32,
+    pub price: u32,
     pub limited: u32,
-    pub jacket_print: i32,
-    pub jacket_mask: i32,
-    pub max_exscore: i32,
+    pub jacket_print: u32,
+    pub jacket_mask: u32,
+    pub max_exscore: u32,
     pub radar: Radar,
 }
 
