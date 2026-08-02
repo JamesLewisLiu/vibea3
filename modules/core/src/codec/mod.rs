@@ -73,12 +73,19 @@ pub struct DecodeOptions {
     pub max_data: usize,
 }
 
+const DEFAULT_MAX_DEPTH: usize = 64;
+const DEFAULT_MAX_NODES: usize = 500_000;
+const DEFAULT_MAX_DATA_BYTES: usize = 32 * 1024 * 1024;
+
 impl Default for DecodeOptions {
     fn default() -> Self {
         Self {
-            max_depth: 64,
-            max_nodes: 65_535,
-            max_data: 32 * 1024 * 1024,
+            max_depth: DEFAULT_MAX_DEPTH,
+            // Official music databases routinely exceed 65,535 property
+            // nodes. This is a configurable resource guard, not a kbin field
+            // width, so keep a practical default without imposing a u16 cap.
+            max_nodes: DEFAULT_MAX_NODES,
+            max_data: DEFAULT_MAX_DATA_BYTES,
         }
     }
 }

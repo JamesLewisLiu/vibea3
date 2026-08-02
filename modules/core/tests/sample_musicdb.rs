@@ -15,10 +15,7 @@ fn decode_external_musicdb_kbin_when_requested() {
         eprintln!("skipping external kbin sample; VIBEA3_KBIN_SAMPLE is unset");
         return;
     };
-    let options = DecodeOptions {
-        max_nodes: 500_000,
-        ..DecodeOptions::default()
-    };
+    let options = DecodeOptions::default();
     let db = decode_kbin::<MusicDb>(&std::fs::read(input).unwrap(), options).unwrap();
     assert_eq!(db.music.len(), 2_244);
     assert_eq!(db.music[0].id, 1);
@@ -129,10 +126,7 @@ fn decode_full_musicdb_sample() {
         std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../samples/musicdb.xml"),
     )
     .unwrap();
-    let options = DecodeOptions {
-        max_nodes: 500_000,
-        ..DecodeOptions::default()
-    };
+    let options = DecodeOptions::default();
     let db = decode_xml::<MusicDb>(&bytes, options).unwrap();
     assert_eq!(db.music.len(), 2_244);
     assert_eq!(db.music[0].id, 1);

@@ -265,7 +265,13 @@ impl BinaryWriter {
         while self.schema.len() % 4 != 0 {
             self.schema.push(0);
         }
-        let mut out = Vec::with_capacity(12 + self.schema.len() + self.data.buf.len());
+        let schema_len = u32::try_from(self.schema.len()).map_err(|_| Error::Limit)?;
+        let data_len = u32::try_from(self.data.buf.len()).map_err(|_| Error::Limit)?;
+        let capacity = 12usize
+            .checked_add(self.schema.len())
+            .and_then(|value| value.checked_add(self.data.buf.len()))
+            .ok_or(Error::Limit)?;
+        let mut out = Vec::with_capacity(capacity);
         out.extend_from_slice(&[
             MAGIC,
             match self.options.names {
@@ -275,9 +281,9 @@ impl BinaryWriter {
             self.options.encoding,
             !self.options.encoding,
         ]);
-        out.extend_from_slice(&(self.schema.len() as u32).to_be_bytes());
+        out.extend_from_slice(&schema_len.to_be_bytes());
         out.extend_from_slice(&self.schema);
-        out.extend_from_slice(&(self.data.buf.len() as u32).to_be_bytes());
+        out.extend_from_slice(&data_len.to_be_bytes());
         out.extend_from_slice(&self.data.buf);
         Ok(out)
     }

@@ -59,11 +59,9 @@ impl DataWriter {
 
     pub(crate) fn variable(&mut self, bytes: &[u8], nul: bool) -> Result<()> {
         let len = bytes.len() + usize::from(nul);
-        if len > 0x00ff_ffff {
-            return Err(Error::Limit);
-        }
+        let encoded_len = u32::try_from(len).map_err(|_| Error::Limit)?;
         let at = self.alloc(4 + len);
-        self.buf[at..at + 4].copy_from_slice(&(len as u32).to_be_bytes());
+        self.buf[at..at + 4].copy_from_slice(&encoded_len.to_be_bytes());
         self.buf[at + 4..at + 4 + bytes.len()].copy_from_slice(bytes);
         Ok(())
     }

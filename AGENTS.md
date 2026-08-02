@@ -24,6 +24,19 @@ These rules apply to every change in this workspace.
 - A psmap path containing `#N` selects the Nth repeated node. Do not serialize the `#N` suffix as part of the field name.
 - For every psmap-derived schema change, add a kbin round-trip or encoded-type regression test covering the corrected field.
 
+## Kbin resource limits
+
+- Do not infer a protocol field-width limit from a decoder safety default. Official property trees can exceed 65,535 nodes; `DecodeOptions.max_nodes` is a configurable resource guard, not a u16 wire field.
+- Kbin variable-value lengths and section lengths are u32. Reject only values that cannot be represented by u32 or that exceed an explicit configured resource policy.
+- When changing a codec bound, test both the smallest value above the old bound and a real official large-tree fixture.
+
+## Reverse-engineered XRPC modules
+
+- A route inventory must be derived from the target client registration table and asserted exactly in a unit test.
+- Request and response structs must include every observed field. Conditional fields are `Option<T>`; repeated nodes and property arrays must use explicit `#[kbin(repeated)]` and `#[kbin(array)]` annotations.
+- Audit request builders and response consumers separately. A successful HTTP/XRPC status does not prove the client receiver accepted the body; required empty container nodes must be emitted when the consumer treats absence as failure.
+- Persist player data by the core global user/data ID. Card IDs and ref IDs are authentication/session handles, never game-save primary keys.
+
 ## Review checklist
 
 - Search the changed area for hard-coded item counts, upper ID bounds, `.take(...)`, `resize(...)`, database query limits, and raw hexadecimal masks.

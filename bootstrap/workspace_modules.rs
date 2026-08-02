@@ -165,7 +165,7 @@ mod tests {
                 .iter()
                 .map(|module| module.package.as_str())
                 .collect::<Vec<_>>(),
-            ["core", "popn_highcheers"]
+            ["core", "popn_highcheers", "sdvx_nebula"]
         );
 
         let directory = tempfile::tempdir().unwrap();

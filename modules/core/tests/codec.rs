@@ -332,3 +332,22 @@ fn wire_string_preserves_binary_encoding() {
         source
     );
 }
+
+#[test]
+fn kbin_variable_values_use_the_full_u32_length_prefix() {
+    const FIRST_LENGTH_ABOVE_24_BITS: usize = 0x0100_0000;
+
+    #[derive(Debug, PartialEq, Kbin)]
+    #[kbin(node = "large")]
+    struct LargePacket {
+        data: Binary,
+    }
+
+    let source = LargePacket {
+        data: Binary(vec![0x5a; FIRST_LENGTH_ABOVE_24_BITS].into()),
+    };
+    let encoded = encode_kbin(&source, EncodeOptions::default()).unwrap();
+    let decoded: LargePacket = decode_kbin(&encoded, DecodeOptions::default()).unwrap();
+    assert_eq!(decoded.data.0.len(), FIRST_LENGTH_ABOVE_24_BITS);
+    assert_eq!(decoded.data.0[0], 0x5a);
+}
