@@ -1,4 +1,4 @@
-# SDVX Nebula `extend/info` reference
+# SDVX Nabula `extend/info` reference
 
 This document describes the `extend/info` consumers in the pinned KFC
 2026-07-14 `sv7.dll`. It is based on client code, not names guessed from server

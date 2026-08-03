@@ -22,7 +22,7 @@ async fn init(host: Arc<dyn HostServices>) -> Result<State, String> {
         music = common.music.len(),
         appeal_cards = common.appeal_cards.len(),
         akaname_parts = common.akaname_parts.len(),
-        "loaded SDVX Nebula local catalogs"
+        "loaded SDVX Nabula local catalogs"
     );
     let database = Database::new(host.database());
     database.initialize().await?;
@@ -30,10 +30,10 @@ async fn init(host: Arc<dyn HostServices>) -> Result<State, String> {
 }
 
 export_xrpc_module! {
-    module: "sdvx-nebula",
+    module: "sdvx-nabula",
     version: "0.1.0",
     model: "KFC",
-    datecode_min: "20260714",
+    datecode_min: "20251224",
     services: ["local"],
     host: dyn HostServices,
     host_fingerprint: HOST_API_FINGERPRINT,
@@ -93,10 +93,10 @@ mod tests {
     }
 
     #[test]
-    fn exports_the_open_ended_nebula_gate() {
+    fn exports_the_open_ended_nabula_gate() {
         let export = unsafe { &*vibea3_xrpc_module_v2() };
         assert_eq!(export.model, Some("KFC"));
-        assert_eq!(export.datecode_min, Some("20260714"));
+        assert_eq!(export.datecode_min, Some("20251224"));
         assert_eq!(export.datecode_max, None);
         assert_eq!(export.services, ["local"]);
     }

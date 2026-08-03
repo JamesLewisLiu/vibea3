@@ -110,17 +110,17 @@ mod tests {
     }
 
     fn load_from_manifest() -> Result<CommonData, String> {
-        let old = std::env::var_os("SDVX_NEBULA_DATA_DIR");
+        let old = std::env::var_os("SDVX_NABULA_DATA_DIR");
         unsafe {
             std::env::set_var(
-                "SDVX_NEBULA_DATA_DIR",
-                std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../data/sdvx_nebula"),
+                "SDVX_NABULA_DATA_DIR",
+                std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../data/sdvx_nabula"),
             );
         }
         let result = load();
         match old {
-            Some(value) => unsafe { std::env::set_var("SDVX_NEBULA_DATA_DIR", value) },
-            None => unsafe { std::env::remove_var("SDVX_NEBULA_DATA_DIR") },
+            Some(value) => unsafe { std::env::set_var("SDVX_NABULA_DATA_DIR", value) },
+            None => unsafe { std::env::remove_var("SDVX_NABULA_DATA_DIR") },
         }
         result
     }

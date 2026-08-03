@@ -1,4 +1,4 @@
-# SDVX Nebula semantic notes
+# SDVX Nabula semantic notes
 
 These notes describe behavior recovered from the exact KFC 2026-07-14
 `sv7.dll`. They distinguish fixed wire layout from fields whose business name
@@ -19,7 +19,7 @@ a sentinel, a fallback value, or ignored.
 
 The complete field-level reference, including all 24 outer types, command
 grammars, subtype gates, ignored fields, and the client-wide 256-record input
-limit, is in [SDVX_NEBULA_EXTEND.md](SDVX_NEBULA_EXTEND.md).
+limit, is in [SDVX_NABULA_EXTEND.md](SDVX_NABULA_EXTEND.md).
 
 ## `sv7_load_m` music parameter array
 

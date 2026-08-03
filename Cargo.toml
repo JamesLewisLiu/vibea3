@@ -5,7 +5,7 @@ members = [
     "modules/core",
     "modules/core_module",
     "modules/popn_highcheers",
-    "modules/sdvx_nebula",
+    "modules/sdvx_nabula",
     "modules/test_module",
 ]
 resolver = "2"

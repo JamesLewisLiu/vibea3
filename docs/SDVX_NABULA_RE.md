@@ -1,4 +1,4 @@
-# SDVX Nebula (`sv7.dll`) reverse-engineering notes
+# SDVX Nabula (`sv7.dll`) reverse-engineering notes
 
 ## Target build
 
@@ -6,11 +6,11 @@
 - SHA-256: `c2d1b5e08953994dd5fe658d8a574ea74db625103f5ea4eb53e72038b95d0b83`
 - Model: `KFC`
 - Update release code: `2026071400`
-- Module date gate: `20260714` through the unbounded future. Vibea3 gates on the eight-digit date portion of the model string.
+- Module date gate: `20251224` through the unbounded future. Vibea3 gates on the eight-digit date portion of the model string.
 - Exported service: `local`
-- Dynamic module name: `sdvx-nebula`
+- Dynamic module name: `sdvx-nabula`
 
-The workspace copy at `samples/sdvx_nebula_update` matches the IDA input hash. No implementation step depends on files outside the workspace.
+The workspace copy at `samples/sdvx_nabula_update` matches the IDA input hash. No implementation step depends on files outside the workspace.
 
 ## Route inventory
 
@@ -49,7 +49,7 @@ The client registers exactly 30 XRPC methods, all under class `game`:
 | `sv7_shop` | `0x180616790` | `0x1806175f0` |
 | `sv7_save_valgene` | `0x1806177e0` | `0x180617a60` |
 
-`modules/sdvx_nebula/src/lib.rs` asserts this exact route set so additions or omissions cannot be accidental.
+`modules/sdvx_nabula/src/lib.rs` asserts this exact route set so additions or omissions cannot be accidental.
 
 ## Required response corners
 
@@ -68,7 +68,7 @@ These are cases where status `0` alone is insufficient:
 
 The recovered operand meanings for `extend`, the 26-member music array, the
 profile parameter records, and all 121 recognized event commands are in
-`docs/SDVX_NEBULA_SEMANTICS.md`.
+`docs/SDVX_NABULA_SEMANTICS.md`.
 
 ## Psmap schemas
 
@@ -96,7 +96,7 @@ The full `sv7_save` request additionally includes profile currency deltas, Varia
 
 ## Local data
 
-The update ships authoritative local catalogs. `tools/extract_sdvx_nebula_data.py` pins and converts:
+The update ships authoritative local catalogs. `tools/extract_sdvx_nabula_data.py` pins and converts:
 
 | Source | SHA-256 |
 |---|---|
@@ -104,7 +104,7 @@ The update ships authoritative local catalogs. `tools/extract_sdvx_nebula_data.p
 | `appeal_card.xml` | `84d626285f7ff5d9cab007f40aca0b5f3825b748da035d017bd2036003f99699` |
 | `akaname_parts.xml` | `9a16dcfb0b174931bc502efd2803a2d50c03f480e526b7bd02d14c210b99c46e` |
 
-Generated data lives in `data/sdvx_nebula/catalog.json`; server-controlled deltas live separately in `info.json`. Tests use anchor records and never freeze mutable catalog counts or a last ID.
+Generated data lives in `data/sdvx_nabula/catalog.json`; server-controlled deltas live separately in `info.json`. Tests use anchor records and never freeze mutable catalog counts or a last ID.
 
 `sv7_common` is delta-oriented because the game already loads these local databases. The codec is nevertheless tested with the entire catalog tree and can represent it.
 

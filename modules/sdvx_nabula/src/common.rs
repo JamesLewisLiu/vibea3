@@ -53,13 +53,13 @@ struct SourceHashes {
 const SHA256_HEX_LENGTH: usize = 64;
 
 pub(crate) fn load() -> Result<CommonData, String> {
-    let directory = std::env::var_os("SDVX_NEBULA_DATA_DIR")
+    let directory = std::env::var_os("SDVX_NABULA_DATA_DIR")
         .map(PathBuf::from)
         .unwrap_or_else(|| {
             std::env::var_os("VIBEA3_DATA_DIR")
                 .map(PathBuf::from)
                 .unwrap_or_else(|| PathBuf::from("data"))
-                .join("sdvx_nebula")
+                .join("sdvx_nabula")
         });
     let info: InfoFile = read_json(directory.join("info.json"))?;
     let catalog: CatalogFile = read_json(directory.join("catalog.json"))?;
